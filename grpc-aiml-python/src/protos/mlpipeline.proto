@@ -1,0 +1,55 @@
+
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "io.grpc.examples.ml";
+option java_outer_classname = "MLProto";
+option objc_class_prefix = "ML";
+
+package mlpipeline;
+
+// The feature engineering service definition.
+service FeatureEngineeringService {
+  // Calculate engineered features
+  rpc engineerFeatures (RawEventList) returns (FeatureList) {}
+}
+
+// The feature engineering service definition.
+service PredictionService {
+  // Inference Method
+  rpc predict (FeatureList) returns (Prediction) {}
+}
+
+// Event
+message RawEvent {
+  string device_id  = 1;
+  int64 time = 2;
+  float sensor1 = 3;
+  float sensor2 = 4;
+  float sensor3 = 5;
+  float sensor4 = 6;
+}
+
+message RawEventList {
+  string device_id  = 1;
+  repeated RawEvent event = 2;
+}
+
+
+message Feature {
+	string name = 1;
+	float value = 2;
+} 
+
+// List of Features
+message FeatureList {
+  string device_id  = 1;
+  repeated Feature feature = 2;
+}
+
+// Prediction
+message Prediction {
+  string modelId = 1;
+  string deviceId = 2;
+  map<string,string> result = 3;
+}
