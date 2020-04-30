@@ -17,7 +17,7 @@
 
 `cd src/python`	
 
-`python3 -m grpc_tools.protoc -I../../protos --python_out=. --grpc_python_out=. ../../protos/mlpipeline.proto`
+`python3 -m grpc_tools.protoc -I ../../protos --python_out=. --grpc_python_out=. ../../protos/mlpipeline.proto`
 
 ### Start the Python Servers exposing the gRPC endpoints ###
 
