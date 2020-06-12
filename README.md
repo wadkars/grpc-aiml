@@ -17,18 +17,18 @@
 
 `cd src/python`	
 
-`python3 -m grpc_tools.protoc -I ../../protos --python_out=. --grpc_python_out=. ../../protos/mlpipeline.proto`
+`python3 -m grpc_tools.protoc -I protos --python_out=. --grpc_python_out=. protos/mlpipeline.proto`
 
 ### Start the Python Servers exposing the gRPC endpoints ###
 
 - Start the Feature Engineering Server (port 10001)
-` python3 featureengineering_server.py`
+` python3 mlpipeline/featureengineering_server.py`
 
 - Start another terminal
 `cd grpc-aiml-python/src/python`
 
 - In that terminal tart the ML Inference Server (port 10011)
-` python3 prediction_server.py`
+` python3 mlpipeline/prediction_server.py`
 
 ### Build the Java Server ###
 `cd grpc-aiml-java`
@@ -81,7 +81,7 @@ This demonstrates how inter-language communication works seamlessly. Results fro
 # Streaming Engine To Do
 
 1. Kafka platform which send raw events for a large number of devices which have 4 sensors each
-2. State-management in Flink. Flink is responsible for managing a 10 hour window. As each new event comes it Flink stateful operator will verify if it is the most recent event (events can be late). If it is the most recent event, Flink Operator will remove events which are more than 10 hours old. If it is not the most recent event Flink Operator will add the new event to the existing window state if it is within the current 10 hour window (wrt the most recent event in the window)
+2. State-management in Flink. Flink is responsible for managing a mult-hour hour window. As each new event comes it Flink stateful operator will verify if it is the most recent event (events can be late). If it is the most recent event, Flink Operator will remove events which are older than the window inteval. If it is not the most recent event Flink Operator will add the new event to the existing window state if it is within the current  window (wrt the most recent event in the window)
 3. Flink will invoke the Feature Engineering and Inference pipeline for each event (high velocity) as well as every 5 minutes (to demonstrate the timer capability of Flink process functions)
 4. Run Flink on Kubernetes
 
